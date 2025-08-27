@@ -2,3 +2,5 @@ Udah tuh udah bener semua, itu yang tulisannya belom jadi sebenernya udah jadi c
 **mending lanjut scroll fesnuk**
 
 tinggal lanjutin aja fitur fiturnya sama backend
+
+sumpah bete bgt sama pehape
