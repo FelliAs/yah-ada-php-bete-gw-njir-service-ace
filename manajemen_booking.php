@@ -1,5 +1,7 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (!isset($_SESSION['username'])) {
     header("Location: login.php?error=Silakan login dulu!");
     exit;
@@ -50,6 +52,31 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
       });
       document.getElementById('menu-'+id).classList.toggle('hidden');
     }
+
+    // fungsi filter tabel
+    function filterTable() {
+      let searchInput = document.getElementById("searchInput").value.toLowerCase();
+      let statusFilter = document.getElementById("statusFilter").value;
+      let dateFilter = document.getElementById("dateFilter").value;
+
+      let rows = document.querySelectorAll("#bookingTable tbody tr");
+
+      rows.forEach(row => {
+        let nama = row.querySelector(".nama").textContent.toLowerCase();
+        let status = row.querySelector(".status-btn").textContent.trim();
+        let tanggal = row.querySelector(".tanggal").textContent.split("|")[0].trim();
+
+        let matchSearch = nama.includes(searchInput);
+        let matchStatus = (statusFilter === "" || status === statusFilter);
+        let matchDate = (dateFilter === "" || tanggal === dateFilter);
+
+        if (matchSearch && matchStatus && matchDate) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
   </script>
 </head>
 <body class="flex bg-gray-100 min-h-screen">
@@ -91,8 +118,29 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
     <h1 class="text-3xl font-bold text-blue-900 mb-2">Manajemen Booking</h1>
     <p class="text-gray-600 mb-8">Kelola dan lacak semua pemesanan layanan Anda dengan mudah dalam satu tempat.</p>
 
+    <!-- Search & Filter -->
+    <div class="flex flex-wrap gap-4 mb-6 p-4 bg-green-300 rounded-lg shadow">
+      <!-- Search nama -->
+      <input type="text" id="searchInput" 
+            onkeyup="filterTable()" 
+            placeholder="Cari nama pelanggan..." 
+            class="px-3 py-2 border rounded-lg w-60">
+
+      <!-- Filter status -->
+      <select id="statusFilter" onchange="filterTable()" class="px-3 py-2 border rounded-lg">
+        <option value="">Semua Status</option>
+        <option value="Diproses">Diproses</option>
+        <option value="Selesai">Selesai</option>
+      </select>
+
+      <!-- Filter tanggal -->
+      <input type="date" id="dateFilter" onchange="filterTable()" class="px-3 py-2 border rounded-lg">
+    </div>
+
+
+    <!-- Tabel Booking -->
     <div class="bg-white shadow rounded-xl overflow-hidden">
-      <table class="w-full text-left border-collapse">
+      <table id="bookingTable" class="w-full text-left border-collapse">
         <thead class="bg-gray-100">
           <tr>
             <th class="p-3">Nama Pelanggan</th>
@@ -105,18 +153,16 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
         <tbody>
           <?php while($row = $bookings->fetch_assoc()): ?>
             <tr class="border-b">
-              <td class="p-3"><?php echo $row['nama_pelanggan']; ?></td>
+              <td class="p-3 nama"><?php echo $row['nama_pelanggan']; ?></td>
               <td class="p-3"><?php echo $row['jenis_layanan']; ?></td>
-              <td class="p-3"><?php echo $row['tanggal']." | ".substr($row['jam'],0,5); ?></td>
+              <td class="p-3 tanggal"><?php echo $row['tanggal']." | ".substr($row['jam'],0,5); ?></td>
               <td class="p-3"><?php echo $row['alamat']; ?></td>
               <td class="p-3 relative">
-                <!-- tombol utama -->
                 <button onclick="toggleMenu(<?php echo $row['id']; ?>)"
-                        class="px-3 py-1 rounded-full text-white text-sm
+                        class="status-btn px-3 py-1 rounded-full text-white text-sm
                                <?php echo $row['status']=="Diproses" ? 'bg-yellow-400' : 'bg-blue-800'; ?>">
                   <?php echo $row['status']; ?>
                 </button>
-                <!-- popup menu -->
                 <div id="menu-<?php echo $row['id']; ?>" 
                      class="menu-popup hidden absolute right-0 mt-2 w-28 bg-white shadow rounded-lg z-10">
                   <form method="post">
