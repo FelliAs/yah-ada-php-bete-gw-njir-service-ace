@@ -5,6 +5,13 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
+// Fungsi logout
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.php?success=Berhasil logout!");
+    exit;
+}
+
 $host = "localhost";
 $user = "root";
 $pass = "";

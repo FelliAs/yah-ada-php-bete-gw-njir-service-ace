@@ -7,6 +7,13 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
+// Fungsi logout
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.php?success=Berhasil logout!");
+    exit;
+}
+
 $host = "localhost";
 $user = "root";
 $pass = "";
@@ -119,7 +126,7 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
     <p class="text-gray-600 mb-8">Kelola dan lacak semua pemesanan layanan Anda dengan mudah dalam satu tempat.</p>
 
     <!-- Search & Filter -->
-    <div class="flex flex-wrap gap-4 mb-6 p-4 bg-green-300 rounded-lg shadow">
+    <div class="flex flex-wrap gap-4 mb-4">
       <!-- Search nama -->
       <input type="text" id="searchInput" 
             onkeyup="filterTable()" 
