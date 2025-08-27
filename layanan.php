@@ -24,13 +24,6 @@ if ($conn->connect_error) die("Koneksi gagal: " . $conn->connect_error);
 $layanan = $conn->query("SELECT * FROM layanan ORDER BY id DESC");
 ?>
 
-// Fungsi logout
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header("Location: login.php?success=Berhasil logout!");
-    exit;
-}
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -53,9 +46,10 @@ if (isset($_GET['logout'])) {
   <!-- Sidebar -->
   <aside class="w-64 bg-gradient-to-b from-blue-50 to-gray-100 p-6 shadow-lg flex flex-col justify-between">
     <div>
-      <div class="flex items-center space-x-2 mb-8">
-        <img src="logo.png" class="w-10 h-10" alt="Logo">
-        <span class="font-bold text-xl text-blue-900">DinginBro!</span>
+      <div class="flex justify-center mb-8">
+        <img src="assets/logo.jpg" 
+            class="w-40 h-16 object-cover rounded-lg" 
+            alt="Logo">
       </div>
       <nav class="space-y-4">
         <a href="dashboard.php" class="flex items-center space-x-2 text-gray-700 hover:text-blue-700">📊 <span>Dashboard</span></a>
@@ -66,7 +60,7 @@ if (isset($_GET['logout'])) {
       </nav>
     </div>
     <div>
-      <a href="logout.php" class="flex items-center space-x-2 text-red-600 hover:text-red-800">↩️ <span>Logout</span></a>
+      <a href="layanan.php?logout=true" class="flex items-center space-x-2 text-red-600 hover:text-red-800">↩️ <span>Logout</span></a>
     </div>
   </aside>
 

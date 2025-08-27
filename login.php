@@ -12,9 +12,10 @@
     
     <!-- Bagian kiri -->
     <div class="flex flex-col items-start space-y-6">
-      <div class="flex items-center space-x-2">
-        <img src="logo.png" alt="Logo" class="w-10 h-10"> 
-        <span class="text-xl font-bold text-gray-800">DinginBro!</span>
+      <div class="flex justify-center mb-8">
+        <img src="assets/logo.jpg" 
+            class="w-40 h-16 object-cover rounded-lg" 
+            alt="Logo">
       </div>
 
       <h1 class="text-5xl font-extrabold text-blue-900">Welcome!</h1>

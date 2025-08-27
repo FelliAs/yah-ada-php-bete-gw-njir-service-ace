@@ -54,10 +54,16 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     function toggleMenu(id) {
-      document.querySelectorAll('.menu-popup').forEach(el => {
-        if (el.id !== 'menu-'+id) el.classList.add('hidden');
-      });
-      document.getElementById('menu-'+id).classList.toggle('hidden');
+      document.querySelectorAll('.menu-popup').forEach(el => el.classList.add('hidden'));
+
+      let btn = event.target;
+      let rect = btn.getBoundingClientRect(); // posisi tombol di layar
+      let menu = document.getElementById('menu-' + id);
+
+      menu.style.top = (rect.bottom + window.scrollY) + "px";
+      menu.style.left = (rect.right - menu.offsetWidth) + "px";
+
+      menu.classList.toggle('hidden');
     }
 
     // fungsi filter tabel
@@ -91,9 +97,10 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
   <!-- Sidebar -->
   <aside class="w-64 bg-gradient-to-b from-blue-50 to-gray-100 p-6 shadow-lg flex flex-col justify-between">
     <div>
-      <div class="flex items-center space-x-2 mb-8">
-        <img src="logo.png" class="w-10 h-10" alt="Logo">
-        <span class="font-bold text-xl text-blue-900">DinginBro!</span>
+      <div class="flex justify-center mb-8">
+        <img src="assets/logo.jpg" 
+            class="w-40 h-16 object-cover rounded-lg" 
+            alt="Logo">
       </div>
       <nav class="space-y-4">
         <a href="dashboard.php" class="flex items-center space-x-2 text-gray-700 hover:text-blue-700">
@@ -114,9 +121,7 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
       </nav>
     </div>
     <div>
-      <a href="logout.php" class="flex items-center space-x-2 text-red-600 hover:text-red-800">
-        <span>↩️</span><span>Logout</span>
-      </a>
+      <a href="manajemen_booking.php?logout=true" class="flex items-center space-x-2 text-red-600 hover:text-red-800">↩️ <span>Logout</span></a>
     </div>
   </aside>
 
@@ -171,7 +176,7 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
                   <?php echo $row['status']; ?>
                 </button>
                 <div id="menu-<?php echo $row['id']; ?>" 
-                     class="menu-popup hidden absolute right-0 mt-2 w-28 bg-white shadow rounded-lg z-10">
+                    class="menu-popup hidden fixed z-50 bg-white shadow rounded-lg w-28">
                   <form method="post">
                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                     <button name="aksi" value="Diproses" class="block w-full px-3 py-2 text-left text-yellow-600 hover:bg-gray-100">Diproses</button>

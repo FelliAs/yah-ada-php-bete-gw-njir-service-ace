@@ -41,9 +41,10 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
   <!-- Sidebar -->
   <aside class="w-64 bg-gradient-to-b from-blue-50 to-gray-100 p-6 shadow-lg flex flex-col justify-between">
     <div>
-      <div class="flex items-center space-x-2 mb-8">
-        <img src="/assets/logo.jpg" class="w-10 h-10" alt="Logo">
-        <span class="font-bold text-xl text-blue-900">DinginBro!</span>
+      <div class="flex justify-center mb-8">
+        <img src="assets/logo.jpg" 
+            class="w-40 h-16 object-cover rounded-lg" 
+            alt="Logo">
       </div>
       <nav class="space-y-4">
         <a href="dashboard.php" class="flex items-center space-x-2 text-blue-900 font-semibold">
@@ -64,9 +65,7 @@ $bookings = $conn->query("SELECT * FROM bookings ORDER BY tanggal, jam");
       </nav>
     </div>
     <div>
-      <a href="logout.php" class="flex items-center space-x-2 text-red-600 hover:text-red-800">
-        <span>↩️</span><span>Logout</span>
-      </a>
+      <a href="dashboard.php?logout=true" class="flex items-center space-x-2 text-red-600 hover:text-red-800">↩️ <span>Logout</span></a>
     </div>
   </aside>
 
